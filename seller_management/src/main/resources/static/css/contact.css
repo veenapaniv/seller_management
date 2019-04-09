@@ -1,0 +1,47 @@
+/*Created by Group5*/
+/*ID's: 700690160, 700688256, 700688506 */
+body {
+	font-family: Poppins-Regular;
+	font-weight: bold;
+	overflow: scroll;
+	color: #fff;
+}
+.seller-contactus {
+background-image: url('../images/contactus1.jpg');
+background-repeat : no-repeat;
+background-size: cover;
+}
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 10px;
+    height: 550px;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	width: 55%;
+}
+.contact {
+	margin-top: 20px;
+    margin-left: 50px;
+}
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 125px; 
+}
+.seller-email {
+	margin-top: 20px;
+}
+p {
+	font-size: 17px;
+}
+h4, h5, h3 {
+	font-weight: bold;
+}
+.text-center {
+	text-align: center;
+}
+a {
+	color: #fff;
+}
