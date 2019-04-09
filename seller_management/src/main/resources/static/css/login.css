@@ -1,0 +1,14 @@
+#logo{
+    width:50%;
+    height:50%;
+}
+
+.login-form{
+    margin: auto;
+    width: 50%;
+    padding: 10%;
+}
+
+#error-message{
+    display:none;
+}

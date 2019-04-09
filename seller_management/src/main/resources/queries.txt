@@ -1,0 +1,71 @@
+User Table 
+    UserID (PK)
+    username
+    Firstname
+    Lastname
+    password
+    phone
+    address
+Iventory Table
+    ProductId (PK)
+    PName
+    PImg
+    Quantity
+    Amount
+    Shipping_Rate
+    Last_Updated    
+    
+Orders
+    OID (PK)
+    PID (FK Inventory PID)
+    Status
+Sales
+    SaleId (PK)
+    SaleQty
+    ReturnQty
+    ProductId (FK Inventory PID)
+Channels
+    ChannelID (PK)
+    ChannelName
+    ChannelImage
+Channel_Product
+    ChannelId (FK Channels CID)
+    ProductId (FK Inventory PID)
+
+
+
+
+
+Queries
+Use Seller_Management;
+CREATE TABLE USER (UserId varchar(32) Primary Key,Username varchar(32),Password Varchar(32),FirstName varchar(32),LastName Varchar(32), Phone BigInt,Address Varchar(50));
+CREATE TABLE INVENTORY (ProductId Integer Primary Key,ProductName varchar(32),ProductImage varchar(100),Quantity Integer,Amount Float,Shipping_Rate Float,Last_Updated DATETIME);
+CREATE TABLE ORDERS (OrderId Integer Primary Key,ProductId Integer,Status Varchar(15));
+CREATE TABLE SALES (SaleId Integer Primary Key,ProductId Integer,Sales_Qty Integer,Return_Qty Integer);
+ALTER TABLE SALES ADD FOREIGN KEY (ProductId) References Inventory (ProductId);
+ALTER TABLE ORDERS ADD FOREIGN KEY (ProductId) References Inventory (ProductId);
+CREATE TABLE Channels (ChannelId Integer Primary Key,ChannelName varchar(32),ChannelImage Varchar(100));
+CREATE TABLE Channel_Product(ChannelId Integer,ProductId Integer);
+ALTER TABLE Channel_Product ADD FOREIGN KEY (ProductId) References Inventory (ProductId);
+ALTER TABLE Channel_Product ADD FOREIGN KEY (ChannelId) References Channels (ChannelId);
+
+INSERT INTO USER VALUES(1,'Swathi Uppu','abc123','Swathi','Uppu',6601111111,'Missouri'); 
+INSERT INTO USER VALUES(2,'Veenapani Veena','abc123','Veenapani','veena',6601111111,'Missouri');
+
+INSERT INTO INVENTORY VALUES(1,'Headphones','https://source.unsplash.com/200x200/?headphones',50,200,5,'2019-04-02 14:21:21');
+INSERT INTO INVENTORY VALUES(2,'Television','https://source.unsplash.com/200x200/?tv',50,500,50,'2019-04-02 14:21:21');
+
+INSERT INTO ORDERS VALUES(1,1,'New Order');
+INSERT INTO ORDERS VALUES(2,2,'Shipped');
+
+INSERT INTO SALES VALUES (1,1,2,1);
+INSERT INTO SALES VALUES (2,1,1,2);
+
+INSERT INTO CHANNELS VALUES (1,'Amazon','https://source.unsplash.com/200x200/?amazon');
+INSERT INTO CHANNELS VALUES (2,'Walmart','https://source.unsplash.com/200x200/?walmart');
+
+INSERT INTO CHANNEL_PRODUCT VALUES(1,1);
+INSERT INTO CHANNEL_PRODUCT VALUES(1,2);
+INSERT INTO CHANNEL_PRODUCT VALUES(2,1);
+INSERT INTO CHANNEL_PRODUCT VALUES(2,2);
+
