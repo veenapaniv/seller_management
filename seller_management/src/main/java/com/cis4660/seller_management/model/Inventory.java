@@ -13,14 +13,15 @@ public class Inventory {
 	private float amount;
 	private float shippingRate;
 	private java.sql.Timestamp lastUpdated;
-	private List<String> companies;
+	private List<String> channels;
 	private int sold;
 	private int returned;
-	public List<String> getCompanies() {
-		return companies;
+	
+	public List<String> getChannels() {
+		return channels;
 	}
-	public void setCompanies(List<String> companies) {
-		this.companies = companies;
+	public void setChannels(List<String> channels) {
+		this.channels = channels;
 	}
 	public int getSold() {
 		return sold;

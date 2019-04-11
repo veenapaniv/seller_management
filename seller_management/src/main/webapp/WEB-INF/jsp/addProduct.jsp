@@ -51,8 +51,8 @@
 					<!-- <input type="text" class="form-control" id="stock" required>-->
 				</div>
 			    <div class="form-group">
-				<label for="companies">Choose companies <span class="asterisk">*</span></label>
-						<select multiple class="form-control" id="companies" required name="companies" path="companies">
+				<label for="channels">Choose channels <span class="asterisk">*</span></label>
+						<select multiple class="form-control" id="channels" required name="channels" path="channels">
 							<option>Amazon</option>
 							<option>Wayfair</option>
 							<option>Etsy</option>

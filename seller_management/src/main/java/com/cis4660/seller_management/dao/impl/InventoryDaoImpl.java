@@ -63,7 +63,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 			inventory.setShippingRate(((float)row.get("Shipping_Rate")));
 			inventory.setLastUpdated(((java.sql.Timestamp)row.get("Last_Updated")));
 			inventory.setImage(getImage((int)row.get("ProductId")));
-			getCompanies(inventory);
+			getChannels(inventory);
 			getSalesAndReturn(inventory);
 			result.add(inventory);
 		}
@@ -149,16 +149,16 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}
 		return channels;
 	}
-	public void getCompanies(Inventory inventory) {
+	public void getChannels(Inventory inventory) {
 		List<Integer> channelIds = getChannels(inventory.getProductId());
 		List<String> channelNames = new ArrayList<String>();
 		for(Integer channelId: channelIds) {
-			String companiesQuery = "SELECT * FROM channels where ChannelId = "+ channelId;
-			List<Map<String, Object>> rows = getJdbcTemplate().queryForList(companiesQuery);
+			String channelsQuery = "SELECT * FROM channels where ChannelId = "+ channelId;
+			List<Map<String, Object>> rows = getJdbcTemplate().queryForList(channelsQuery);
 			for(Map<String, Object> row:rows){
 				channelNames.add((String)row.get("ChannelName"));
 			}
-			inventory.setCompanies(channelNames);
+			inventory.setChannels(channelNames);
 		}
 	}
 	public void getSalesAndReturn(Inventory inventory) {

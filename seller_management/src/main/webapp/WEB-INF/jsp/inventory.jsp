@@ -35,7 +35,7 @@
 					<th>Product Name</th>
 					<th>Product Image</th>
 					<th>Stock</th>
-					<th>Companies</th>
+					<th>Channels</th>
 					<th>Sold</th>
 					<th>Returned</th>
 					<th>Amount</th>
@@ -54,7 +54,7 @@
 		                    <td><c:out value="${inventory.quantity}"/> </td>
 		                    <td>
 		                    	<ul>
-									<c:forEach var="channel" items="${inventory.companies}">
+									<c:forEach var="channel" items="${inventory.channels}">
 										<li>${channel}</li>
 									</c:forEach>
 								</ul>
