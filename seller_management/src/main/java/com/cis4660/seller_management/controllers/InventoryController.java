@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +19,12 @@ import com.cis4660.seller_management.service.InventoryService;
 
 @Controller
 public class InventoryController {
-	/*@RequestMapping("/inventory")
-	public ModelAndView inventoryPage() {
-		return new ModelAndView("inventory");
-	}*/
 	@Autowired
 	InventoryService inventoryService;
+	
+	private List<String> initialChannels;
+	private File initialFile;
+	private int deleteId;
 	@RequestMapping("/inventory")
 	public ModelAndView getInventories() {
 		List<Inventory> inventory = inventoryService.getInventory();
@@ -31,16 +32,49 @@ public class InventoryController {
 		model.addObject("inventories",inventory);
 		return model;
 	}
-	@RequestMapping("editInventory")
-	public ModelAndView editInventory() {
-		return new ModelAndView("editInventory");
+	@RequestMapping(value="/editInventory", method=  RequestMethod.GET)
+	public ModelAndView editInventory(@RequestParam("id") int id) {
+		List<Inventory> inventory = new ArrayList<Inventory>();
+		Inventory myInventory = inventoryService.getProductById(id);
+		inventory.add(myInventory);
+		initialChannels = new ArrayList<String>();
+		initialChannels = myInventory.getChannels();
+		initialFile = myInventory.getUploadedFile();
+		ModelAndView model = new ModelAndView("editInventory");
+		model.addObject("inventories",inventory);
+		return model;
+	}
+	@RequestMapping(value = "/editInventory", method = RequestMethod.POST)
+	public String editInventory(@RequestParam(value="productId") int productId, @RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam(value="channels", required=false) String[] channels, @ModelAttribute("inventory") Inventory inventory) {
+		
+		List<String> channelList = new ArrayList<String>();
+		if(channels !=  null) {
+			for(int i=0;i<channels.length;i++) {
+				channelList.add(channels[i]);
+				inventory.setChannels(channelList);
+			}
+		}else {
+			inventory.setChannels(initialChannels);
+		}
+		if(file != null) {
+			inventory.setUploadedFile(file);
+		}else {
+			inventory.setUploadedFile(initialFile);
+		}
+		inventory.setProductId(productId);
+		inventory.setAmount(amount);
+		inventory.setQuantity(quantity);
+		inventory.setShippingRate(shipping);
+		inventory.setProductName(productName);
+		inventoryService.updateProduct(inventory);
+		return "redirect:/inventory";
 	}
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
 	public ModelAndView show() {
 		return new ModelAndView("addProduct", "inventory", new Inventory());
 	}
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-	public ModelAndView processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam("channels") String[] channels, @ModelAttribute("inventory") Inventory inventory) {
+	public String processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam("channels") String[] channels, @ModelAttribute("inventory") Inventory inventory) {
 		inventory = new Inventory();
 		List<String> channelList = new ArrayList<String>();
 		for(int i=0;i<channels.length;i++) {
@@ -53,9 +87,18 @@ public class InventoryController {
 		inventory.setShippingRate(shipping);
 		inventory.setProductName(productName);
 		inventoryService.insertProduct(inventory);
-		List<Inventory> inventories = inventoryService.getInventory();
-		ModelAndView model = new ModelAndView("addProduct");
-		model.addObject("inventories", inventories);
+		return "redirect:/inventory";
+	}
+	
+	@RequestMapping("/deleteInventory")
+	public ModelAndView deleteInventory(@RequestParam("id") int id) {
+		deleteId = id;
+		ModelAndView model = new ModelAndView("deleteInventory");
 		return model;
+	}
+	@RequestMapping(value="/deleteInventory", method = RequestMethod.POST)
+	public String deleteProduct() {
+		inventoryService.deleteProduct(deleteId);
+		return "redirect:/inventory";
 	}
 }

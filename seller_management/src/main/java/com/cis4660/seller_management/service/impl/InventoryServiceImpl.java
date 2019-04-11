@@ -27,4 +27,22 @@ public class InventoryServiceImpl implements InventoryService{
 		inventoryDao.insertProduct(inventory);
 	}
 
+	@Override
+	public Inventory getProductById(int productId) {
+		// TODO Auto-generated method stub
+		return inventoryDao.getProductById(productId);
+	}
+
+	@Override
+	public void updateProduct(Inventory inventory) {
+		inventoryDao.updateProduct(inventory);
+		
+	}
+
+	@Override
+	public void deleteProduct(int productId) {
+		inventoryDao.deleteProduct(productId);
+		
+	}
+
 }

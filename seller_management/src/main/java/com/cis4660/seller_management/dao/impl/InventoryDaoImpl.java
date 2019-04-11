@@ -114,7 +114,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
             statement.setBlob(3, inputStream);
             statement.executeUpdate();
             addSales(inventory, productId);
-            updateChannels(inventory, productId);
+            addChannels(inventory, productId);
 		}catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }  
@@ -126,7 +126,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 				createSalesId(), productId
 		});
 	}
-	public void updateChannels(Inventory inventory, int productId) {
+	public void addChannels(Inventory inventory, int productId) {
 		List<String> channels = inventory.getChannels();
 		for(String channel: channels) {
 			String channelsQuery = "INSERT INTO channel_product " +
@@ -214,6 +214,71 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}else {
 			return true;
 		}
+	}
+	@Override
+	public Inventory getProductById(int productId) {
+		String inventoryQuery = "SELECT * FROM inventory where ProductId="+productId;
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(inventoryQuery);
+		Inventory inventory = new Inventory();
+		for(Map<String, Object> row:rows){
+			inventory.setProductId((int)row.get("ProductId"));
+			inventory.setProductName(((String)row.get("ProductName")));
+			inventory.setQuantity(((int)row.get("Quantity")));
+			inventory.setAmount(((float)row.get("Amount")));
+			inventory.setShippingRate(((float)row.get("Shipping_Rate")));
+			inventory.setLastUpdated(((java.sql.Timestamp)row.get("Last_Updated")));
+			inventory.setImage(getImage((int)row.get("ProductId")));
+			getChannels(inventory);
+			getSalesAndReturn(inventory);
+		}
+		return inventory;
+	}
+	@Override
+	public void updateProduct(Inventory inventory) {
+		try (Connection connection = DriverManager.getConnection(databaseURL, user, password)) {
+			String updateInventory = "update inventory " +
+					"set ProductName = ?, ProductImage = ?, Quantity = ?, Amount = ?, Shipping_Rate = ?, Last_Updated =? where ProductId = "+inventory.getProductId();
+			PreparedStatement statement = connection.prepareStatement(updateInventory);
+            statement.setString(1, inventory.getProductName());
+            File uploadedFile = new File("C:\\Users\\Swathi Uppu\\Desktop\\Sem2\\Java\\Project\\SellerManagement\\seller_management\\src\\main\\resources\\static\\images\\"+inventory.getUploadedFile().getPath());
+            FileInputStream inputStream= new FileInputStream(uploadedFile);
+            statement.setBlob(2, inputStream);
+            statement.setInt(3, inventory.getQuantity());
+            statement.setFloat(4, inventory.getAmount());
+            statement.setFloat(5, inventory.getShippingRate());
+            statement.setTimestamp(6, getCurrentDate());
+            statement.executeUpdate();
+            //updateSales(inventory, inventory.getProductId());
+            updateChannels(inventory, inventory.getProductId());
+		}catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }  
+	}
+	
+	public void deleteChannel(int productId) {
+		String deleteQuery = "delete from channel_product where ProductId = ?";
+		getJdbcTemplate().update(deleteQuery, new Object[]{
+				 productId
+		});
+	}
+	public void updateChannels(Inventory inventory, int productId) {
+		deleteChannel(productId);
+		addChannels(inventory, productId);
+	}
+	public void deleteSales(int productId) {
+		String deleteProduct = "delete from sales where ProductId = ?";
+		getJdbcTemplate().update(deleteProduct, new Object[]{
+				 productId
+		});
+	}
+	@Override
+	public void deleteProduct(int productId) {
+		deleteChannel(productId);
+		deleteSales(productId);
+		String deleteProduct = "delete from inventory where ProductId = ?";
+		getJdbcTemplate().update(deleteProduct, new Object[]{
+				 productId
+		});
 	}
 	
 }

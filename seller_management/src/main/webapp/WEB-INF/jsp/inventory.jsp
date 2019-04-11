@@ -66,7 +66,7 @@
 							<td><c:out value="${inventory.lastUpdated}"/></td>
 		                    <td><c:url var="editUrl" value="/editInventory" />
 								<a href="${editUrl}?id=${inventory.productId}">Edit</a>
-								<c:url var="deleteUrl" value="/deleteEmployee.htm" />
+								<c:url var="deleteUrl" value="/deleteInventory" />
 								<a href="${deleteUrl}?id=${inventory.productId}">Delete</a>
 							</td>
                			 </tr>

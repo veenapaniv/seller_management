@@ -31,18 +31,42 @@
 				<button type="button" id="backBtn" class="btn btn-default">Go back to Inventory</button>
 				<h3><span class="glyphicon glyphicon-pencil"></span> &nbsp;Edit Product</h3>
 			</div>
-			<form>
+			<form action="/editInventory" method="post"
+			modelAttribute="inventory" id="productForm">
+			<c:forEach var="inventory" items="${inventories}">
 				<div class="form-group">
-					<label for="product">Product ID</label>
-					<input type="text" class="form-control" id="productId" disabled = "true">
+					<label for="productId">Product ID</label>
+					<input type="text" class="form-control" name = "productId" id="productId" path="productId" value="${inventory.productId}" >
+				</div>
+				<div class="form-group">
+					<label for="productName">Product Image</label>
+					<img width=100 height=100 border = 3 src="data:image/jpg;base64,${inventory.image}"/>
+					<!-- <input type="text" class="form-control" id="stock" required>-->
+				</div>
+				<div class="form-group">
+					<form:label path = "id">New Product Image:<span class="asterisk">*</span></form:label>
+					<input type="file" class="" id="file" name="file" path="file">
+				</div>
+				<div class="form-group">
+					<label for="productName">Product Name <span class="asterisk">*</span></label>
+					<input type="text" class="form-control" class="" value="${inventory.productName}" name = "productName" id="productName" path="productName">
+					<!-- <input type="text" class="form-control" id="stock" required>-->
 				</div>
 				<div class="form-group">
 					<label for="stock">Stock <span class="asterisk">*</span></label>
-					<input type="text" class="form-control" id="stock">
+					<input type="text" class="form-control" name = "quantity" id="quantity" path="quantity" value="${inventory.quantity}">
 				</div>
+				<div class="form-group">
+					<label for="selected">Selected Channels</label>
+					<ul>
+						<c:forEach var="channel" items="${inventory.channels}">
+							<li>${channel}</li>
+						</c:forEach>
+					</ul>
+			    </div>
 			    <div class="form-group">
-				<label for="channels">Choose Channels <span class="asterisk">*</span></label>
-						<select multiple class="form-control" id="channels">
+				<label for="channels">Choose Channels</label>
+						<select multiple class="form-control" name = "channels" id="channels" path="channels">
 							<option>Amazon</option>
 							<option>Wayfair</option>
 							<option>Etsy</option>
@@ -52,21 +76,22 @@
 			    </div>
 				<div class="form-group">
 					<label for="sold">Sold</label>
-					<input type="text" class="form-control" id="sold" disabled = "true">
+					<input type="text" class="form-control" id="sold" disabled = "true" value="${inventory.sold}">
 				</div>
    			    <div class="form-group">
 					<label for="returned">Returned</label>
-					<input type="text" class="form-control" id="returned" disabled = "true">
+					<input type="text" class="form-control" id="returned" disabled = "true" value="${inventory.returned}">
 				</div>
 				<div class="form-group">
 					<label for="amount">Amount <span class="asterisk">*</span></label>
-					<input type="text" class="form-control" id="amount">
+					<input type="text" class="form-control" name="amount" id="amount" path="amount" value="${inventory.amount}">
 				</div>
 			    <div class="form-group">
 					<label for="shipping">Shipping <span class="asterisk">*</span></label>
-					<input type="text" class="form-control" id="shipping">
+					<input type="text" class="form-control" name = "shipping" id="shipping" path="shipping" value="${inventory.shippingRate}">
 				</div>
-				<button type="button" id="submitBtn" class="btn btn-info" disabled ="false">Submit</button>
+				<button type="submit" id="submitBtn" class="btn btn-info" >Submit</button>
+				</c:forEach>
 			</form>
 		</div>
 		<div class="seller-footer">
