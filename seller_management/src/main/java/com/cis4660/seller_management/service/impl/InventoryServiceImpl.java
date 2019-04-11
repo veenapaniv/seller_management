@@ -20,4 +20,11 @@ public class InventoryServiceImpl implements InventoryService{
 		// TODO Auto-generated method stub
 		return inventoryDao.getInventory();
 	}
+
+	@Override
+	public void insertProduct(Inventory inventory) {
+		// TODO Auto-generated method stub
+		inventoryDao.insertProduct(inventory);
+	}
+
 }

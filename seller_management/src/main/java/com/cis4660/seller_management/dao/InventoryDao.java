@@ -6,4 +6,5 @@ import com.cis4660.seller_management.model.Inventory;
 
 public interface InventoryDao {
 	List<Inventory> getInventory();
+	void insertProduct(Inventory inventory);
 }

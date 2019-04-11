@@ -52,9 +52,15 @@
 		                    <td><img width=100 height=100 border = 3 src="data:image/jpg;base64,${inventory.image}"/></td>
 		                    
 		                    <td><c:out value="${inventory.quantity}"/> </td>
-		                    <td><c:out value=""/></td>
-		                    <td><c:out value="0"/></td>
-							<td><c:out value="0"/></td>
+		                    <td>
+		                    	<ul>
+									<c:forEach var="channel" items="${inventory.companies}">
+										<li>${channel}</li>
+									</c:forEach>
+								</ul>
+		                    </td>
+		                    <td><c:out value="${inventory.sold}"/></td>
+							<td><c:out value="${inventory.returned}"/></td>
 							<td><c:out value="${inventory.amount}"/></td>
 							<td><c:out value="${inventory.shippingRate}"/></td>
 							<td><c:out value="${inventory.lastUpdated}"/></td>

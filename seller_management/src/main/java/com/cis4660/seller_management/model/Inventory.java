@@ -1,6 +1,8 @@
 package com.cis4660.seller_management.model;
 
+import java.io.File;
 import java.sql.Blob;
+import java.util.List;
 
 public class Inventory {
 	private int productId;
@@ -11,6 +13,35 @@ public class Inventory {
 	private float amount;
 	private float shippingRate;
 	private java.sql.Timestamp lastUpdated;
+	private List<String> companies;
+	private int sold;
+	private int returned;
+	public List<String> getCompanies() {
+		return companies;
+	}
+	public void setCompanies(List<String> companies) {
+		this.companies = companies;
+	}
+	public int getSold() {
+		return sold;
+	}
+	public void setSold(int sold) {
+		this.sold = sold;
+	}
+	public int getReturned() {
+		return returned;
+	}
+	public void setReturned(int returned) {
+		this.returned = returned;
+	}
+	private File uploadedFile;
+	
+	public File getUploadedFile() {
+		return uploadedFile;
+	}
+	public void setUploadedFile(File uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
 	public String getImage() {
 		return image;
 	}
