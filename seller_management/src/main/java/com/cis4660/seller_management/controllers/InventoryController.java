@@ -1,6 +1,7 @@
 package com.cis4660.seller_management.controllers;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,13 @@ public class InventoryController {
 		return new ModelAndView("addProduct", "inventory", new Inventory());
 	}
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-	public ModelAndView processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @ModelAttribute("inventory") Inventory inventory) {
+	public ModelAndView processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam("channels") String[] channels, @ModelAttribute("inventory") Inventory inventory) {
 		inventory = new Inventory();
+		List<String> channelList = new ArrayList<String>();
+		for(int i=0;i<channels.length;i++) {
+			channelList.add(channels[i]);
+			inventory.setChannels(channelList);
+		}
 		inventory.setAmount(amount);
 		inventory.setQuantity(quantity);
 		inventory.setUploadedFile(file);

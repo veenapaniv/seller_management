@@ -114,7 +114,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
             statement.setBlob(3, inputStream);
             statement.executeUpdate();
             addSales(inventory, productId);
-            updateChannels(inventory);
+            updateChannels(inventory, productId);
 		}catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }  
@@ -126,12 +126,23 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 				createSalesId(), productId
 		});
 	}
-	public void updateChannels(Inventory inventory) {
-		/*String sql = "INSERT INTO sales " +
-				"(SaleId, ProductId, Sales_Qty, Return_Qty) VALUES (?,?,0,0)" ;
-		getJdbcTemplate().update(sql, new Object[]{
-				createSalesId(), inventory.getProductId()
-		});*/
+	public void updateChannels(Inventory inventory, int productId) {
+		List<String> channels = inventory.getChannels();
+		for(String channel: channels) {
+			String channelsQuery = "INSERT INTO channel_product " +
+					"(ChannelId, ProductId) VALUES (?,?)" ;
+			getJdbcTemplate().update(channelsQuery, new Object[]{
+					getChannelIds(channel), productId
+			});
+		}
+	}
+	public int getChannelIds(String channelName) {
+		String channelQuery = "select ChannelId from channels where ChannelName = '"+channelName+"'";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(channelQuery);
+		for(Map<String, Object> row:rows){
+			return (Integer)row.get("ChannelId");
+		}
+		return 0;
 	}
 	public Timestamp getCurrentDate() {
 		Date date= new Date();
