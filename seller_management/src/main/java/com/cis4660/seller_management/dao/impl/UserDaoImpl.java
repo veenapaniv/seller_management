@@ -59,5 +59,20 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		});
 		
 	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+		String sql = "SELECT * FROM user WHERE username = ?";
+		return (User)getJdbcTemplate().queryForObject(sql, new Object[]{email}, new RowMapper<User>(){
+			@Override
+			public User mapRow(ResultSet rs, int rwNumber) throws SQLException {
+				User user = new User();
+				user.setUserId(rs.getString("userId"));
+				user.setUsername(rs.getString("username"));
+				return user;
+			}
+		});
+		
+	}
 
 }
