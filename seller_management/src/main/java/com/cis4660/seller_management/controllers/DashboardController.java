@@ -69,5 +69,9 @@ public class DashboardController {
 		return dashboardService.getTrendingProductsThisMonth().toString();
 		
 	}
+	@RequestMapping(value="/contact")
+	public ModelAndView contact() {
+		return new ModelAndView("contact");
+	}
 
 }
