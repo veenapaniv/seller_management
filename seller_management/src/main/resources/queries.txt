@@ -41,7 +41,7 @@ Channel_Product
 Queries
 Use Seller_Management;
 CREATE TABLE USER (UserId varchar(32) Primary Key,Username varchar(32),Password Varchar(32),FirstName varchar(32),LastName Varchar(32), Phone BigInt,Address Varchar(50));
-CREATE TABLE INVENTORY (ProductId Integer Primary Key,ProductName varchar(32),ProductImage varchar(100),Quantity Integer,Amount Float,Shipping_Rate Float,Last_Updated DATETIME);
+CREATE TABLE INVENTORY (ProductId Integer Primary Key,ProductName varchar(32),ProductImage BLOB ,Quantity Integer,Amount Float,Shipping_Rate Float,Last_Updated DATETIME);
 CREATE TABLE ORDERS (OrderId Integer Primary Key,ProductId Integer,Status Varchar(15));
 CREATE TABLE SALES (SaleId Integer Primary Key,ProductId Integer,Sales_Qty Integer,Return_Qty Integer);
 ALTER TABLE SALES ADD FOREIGN KEY (ProductId) References Inventory (ProductId);

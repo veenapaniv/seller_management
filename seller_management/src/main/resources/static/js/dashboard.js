@@ -1,5 +1,3 @@
-//Created by Group5
-//ID's: 700690160, 700688256, 700688506
 "use strict"
 var newsArray;
 var cost;
