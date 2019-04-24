@@ -1,5 +1,4 @@
-/*Created by Group5*/
-/*ID's: 700690160, 700688256, 700688506 */
+
 body {
 	font-family: Poppins-Regular;
 	font-weight: bold;
@@ -7,7 +6,7 @@ body {
 	color: #fff;
 }
 .seller-contactus {
-background-image: url('../images/contactus1.jpg');
+background-image: url("#{resource['images/contactus.jpg']}");
 background-repeat : no-repeat;
 background-size: cover;
 }
@@ -26,7 +25,7 @@ background-size: cover;
 }
 .column {
     float: left;
-    width: 33.33%;
+    width: 50%;
     padding: 10px;
     height: 125px; 
 }
@@ -44,4 +43,7 @@ h4, h5, h3 {
 }
 a {
 	color: #fff;
+}
+a:hover {
+	color: red;
 }

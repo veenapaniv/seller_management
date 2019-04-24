@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,26 +30,29 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cis4660.seller_management.dao.InventoryDao;
 import com.cis4660.seller_management.model.Inventory;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Repository
 public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 	@Autowired
 	DataSource dataSource;
 	
-	 @Value("${spring.datasource.url}")
-	 String databaseURL;
-	
+	@Value("${spring.datasource.url}")
+	String databaseURL;
     String user = "root";
     String password = "test";
 	@PostConstruct
 	private void initialize(){
 		setDataSource(dataSource);
 	}
+	
+	//Getting list of inventory from database and adding it to list of inventory object
 	@Override
 	public List<Inventory> getInventory() {
 		String inventoryQuery = "SELECT * FROM inventory";
@@ -70,6 +74,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		return result;
 	}
 	
+	//Getting the image from database based on productId;
 	public String getImage(int id) {
 		String base64Image = "";
 		 String imageQuery = "SELECT * FROM inventory WHERE ProductId ="+id;
@@ -95,9 +100,10 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
         }  
 		return base64Image;
 		}
+	
+	//Adding a product in database in products table
 	@Override
 	public void insertProduct(Inventory inventory) {
-		// TODO Auto-generated method stub
 		try (Connection connection = DriverManager.getConnection(databaseURL, user, password)) {
 			String insertInventory = "INSERT INTO inventory values (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(insertInventory);
@@ -119,6 +125,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
             ex.printStackTrace();
         }  
 	}
+	
+	//Adding sales details when a product is added. Initial value of sold and returned is 0
 	public void addSales(Inventory inventory, int productId) {
 		String insertSales = "INSERT INTO sales " +
 				"(SaleId, ProductId, Sales_Qty, Return_Qty) VALUES (?,?,0,0)" ;
@@ -126,6 +134,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 				createSalesId(), productId
 		});
 	}
+	
+	//Adding a record in channel_product table based on the channels selected while adding a product
 	public void addChannels(Inventory inventory, int productId) {
 		List<String> channels = inventory.getChannels();
 		for(String channel: channels) {
@@ -136,6 +146,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 			});
 		}
 	}
+	
+	//Retrieving channelIds based on channelName
 	public int getChannelIds(String channelName) {
 		String channelQuery = "select ChannelId from channels where ChannelName = '"+channelName+"'";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(channelQuery);
@@ -144,6 +156,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}
 		return 0;
 	}
+	
+	//Setting current date for last_updated column while adding a product
 	public Timestamp getCurrentDate() {
 		Date date= new Date();
 		long time = date.getTime();		     
@@ -151,6 +165,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		return ts;
 	}
 	
+	//Retrieving channels based on productId
 	public List<Integer> getChannels(int productId) {
 		String channelsQuery = "SELECT channelId from channel_product where productId = "+productId;
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(channelsQuery);
@@ -160,6 +175,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}
 		return channels;
 	}
+	
+	//retriving channels based on productId
 	public void getChannels(Inventory inventory) {
 		List<Integer> channelIds = getChannels(inventory.getProductId());
 		List<String> channelNames = new ArrayList<String>();
@@ -172,6 +189,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 			inventory.setChannels(channelNames);
 		}
 	}
+	
+	//Getting sales and return values to display in inventory page
 	public void getSalesAndReturn(Inventory inventory) {
 		String sql = "select * from sales where ProductId= "+inventory.getProductId();
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
@@ -181,6 +200,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}
 	}
 	
+	//Creating random productId
 	public int createProductId() {
 		int id= (int) Math.round((Math.random()) *100000);
 		while(!validProductId(id)) {
@@ -189,6 +209,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		return id;
 	}
 	
+	//Checking if random productId is already present in database
 	public boolean validProductId(int productId) {
 		String productQuery = "Select productId from inventory where productId="+productId;
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(productQuery);
@@ -198,6 +219,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 			return true;
 		}
 	}
+	
+	//Creating random salesId
 	public int createSalesId() {
 		int id= (int) Math.round((Math.random()) *100000);
 		while(!validSalesId(id)) {
@@ -206,6 +229,7 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		return id;
 	}
 	
+	//Checking if random salesId is already present in database
 	public boolean validSalesId(int salesId) {
 		String salesQuery = "Select SaleId from sales where SaleId="+salesId;
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(salesQuery);
@@ -215,6 +239,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 			return true;
 		}
 	}
+	
+	//Retriving product details based on productId
 	@Override
 	public Inventory getProductById(int productId) {
 		String inventoryQuery = "SELECT * FROM inventory where ProductId="+productId;
@@ -233,6 +259,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 		}
 		return inventory;
 	}
+	
+	//Updating a product in database
 	@Override
 	public void updateProduct(Inventory inventory) {
 		try (Connection connection = DriverManager.getConnection(databaseURL, user, password)) {
@@ -261,16 +289,21 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
 				 productId
 		});
 	}
+	
+	//Updating channels in database
 	public void updateChannels(Inventory inventory, int productId) {
 		deleteChannel(productId);
 		addChannels(inventory, productId);
 	}
+	
+	//deleting sales in database when product is deleted
 	public void deleteSales(int productId) {
 		String deleteProduct = "delete from sales where ProductId = ?";
 		getJdbcTemplate().update(deleteProduct, new Object[]{
 				 productId
 		});
 	}
+	//Deleting products in database
 	@Override
 	public void deleteProduct(int productId) {
 		deleteChannel(productId);

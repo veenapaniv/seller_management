@@ -30,5 +30,5 @@ public interface DashboardDao {
 	List<String> getMonthsReturnedChannels();
 	HashMap<String, Float> getUsersProducts(String userID);
 	HashMap<String,Integer> getTrendingProductsThisMonth();
-
+	String getContact();
 }

@@ -16,7 +16,7 @@ public interface DashboardService {
 	public JSONObject getTodaysData();
 	public JSONObject getUsersProducts(String userId);
 	public JSONObject getTrendingProductsThisMonth();
-	
+	String getContact();
 	
 
 }

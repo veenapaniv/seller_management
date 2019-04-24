@@ -1,5 +1,8 @@
 package com.cis4660.seller_management.controllers;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cis4660.seller_management.service.DashboardService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class DashboardController {
@@ -69,9 +73,22 @@ public class DashboardController {
 		return dashboardService.getTrendingProductsThisMonth().toString();
 		
 	}
+	
 	@RequestMapping(value="/contact")
 	public ModelAndView contact() {
-		return new ModelAndView("contact");
+		String contact = dashboardService.getContact();
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> map = null;
+		try {
+			map = mapper.readValue(contact, Map.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ModelAndView model = new ModelAndView("contact");
+		model.addObject("contact", map);
+		return model;
 	}
 
 }
