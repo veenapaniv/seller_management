@@ -1,7 +1,10 @@
 package com.cis4660.seller_management.dao.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
@@ -389,5 +393,22 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		
 		return productSales;
 	}
+
+	public String getContact() {
+		String content = "";
+		try {
+			File file = new ClassPathResource("contact.json").getFile();
+			content = new String(Files.readAllBytes(file.toPath()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return content;
+	}
+	
+//	select orders.productId,Inventory.productName,
+//
+//	SUM(sales_Qty) From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('2019-03-30%' AS DATE) and order_date <= CAST('2019-04-14%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and
+//
+//	orders.productID IN (select productID from Inventory where userId = 1) GROUP BY orders.productId;
 
 }

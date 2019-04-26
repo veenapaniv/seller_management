@@ -33,10 +33,12 @@ public interface DashboardService {
 	int getMonthsCancelledOrdersSize();
 	int getMonthsReturnedOrdersSize();
 	
+
 	List<String> getMonthsConfirmedChannels();
 	List<String> getMonthsCancelledChannels();
 	List<String> getMonthsReturnedChannels();
-	
+	String getContact();
+
 	
 
 }

@@ -1,6 +1,8 @@
 package com.cis4660.seller_management.controllers;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -14,14 +16,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cis4660.seller_management.model.User;
+import com.cis4660.seller_management.service.DashboardService;
 import com.cis4660.seller_management.service.LoginService;
 import com.cis4660.seller_management.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class LoginController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	DashboardService dashboardService;
 	
 	@Autowired
 	LoginService service;
@@ -52,7 +59,19 @@ public class LoginController {
 	
 	@RequestMapping(value="/contact")
 	public ModelAndView contact() {
-		return new ModelAndView("contact");
+		String contact = dashboardService.getContact();
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> map = null;
+		try {
+			map = mapper.readValue(contact, Map.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ModelAndView model = new ModelAndView("contact");
+		model.addObject("contact", map);
+		return model;
 	}
 	
 }

@@ -5,6 +5,10 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import java.io.IOException;
+import java.util.Map;
+
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cis4660.seller_management.model.Inventory;
 import com.cis4660.seller_management.service.DashboardService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping(value="/dashboard")
@@ -122,13 +127,23 @@ public class DashboardController {
 		
 	}
 	
-	@RequestMapping(value="/products", method = RequestMethod.GET)
+//	@RequestMapping(value="/products", method = RequestMethod.GET)
+//	@ResponseBody
+//	public String productsData(@RequestParam(value="userId", required=true) String userId) {
+//		
+//		String products = dashboardService.getUsersProducts(userId).toString();
+//		return products;
+//		
+//	}
+
+	
+	@RequestMapping(value="trendingProducts",method=RequestMethod.GET)
 	@ResponseBody
-	public String productsData(@RequestParam(value="userId", required=true) String userId) {
+	public String getTrendingProductsThisMonth() {
 		
-		String products = dashboardService.getUsersProducts(userId).toString();
-		return products;
+		return dashboardService.getTrendingProductsThisMonth().toString();
 		
 	}
+	
 
 }
