@@ -1,55 +1,124 @@
 package com.cis4660.seller_management.controllers;
 
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cis4660.seller_management.model.Inventory;
 import com.cis4660.seller_management.service.DashboardService;
 
 @Controller
+@RequestMapping(value="/dashboard")
 public class DashboardController {
 	@Autowired
 	DashboardService dashboardService;
 	
 	private final Logger log = LoggerFactory.getLogger(DashboardController.class);
 	
-	@RequestMapping(value="/dashboard")
-	public ModelAndView firstPage(ModelMap model) {
+	@RequestMapping(value="/dashboard",method = RequestMethod.GET)
+	public ModelAndView firstPage(ModelMap model,HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				if(c.getName().equals("userId")) {
+					String userId = c.getValue();					
+				}
+			}
+		}
 		return new ModelAndView("dashboard");
 	}
 	
-	@RequestMapping(value="/todaysOrders", method = RequestMethod.GET)
-	@ResponseBody
-	public String todaysData() {
+	@ModelAttribute
+	@RequestMapping(method = RequestMethod.GET)
+	public String productsData(HttpServletRequest request,@ModelAttribute("products") Inventory inventory,ModelMap model) {
+		String userId = "";
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				if(c.getName().equals("userId")) {
+					userId = c.getValue();					
+				}
+			}
+		}
 		
-		String todaysData = dashboardService.getTodaysData().toString();
-		return todaysData;
+		List<Inventory> products = dashboardService.getUsersProducts(userId);
+		int todaysConfirmed = dashboardService.getTodaysConfirmedOrdersSize();
+		int todaysCancelled = dashboardService.getTodaysCancelledOrdersSize();
+		int todaysReturned = dashboardService.getTodaysReturnedOrdersSize();
 		
-	}
-	
-	@RequestMapping(value="/weeks_orders", method = RequestMethod.GET)
-	@ResponseBody
-	public String weeksData() {
+		List<String> todaysConfirmedChannels = dashboardService.getTodaysConfirmedChannels();
+		List<String> todaysCancelledChannels = dashboardService.getTodaysCancelledChannels();
+		List<String> todaysReturnedChannels = dashboardService.getTodaysReturnedChannels();
 		
-		String weeksData = dashboardService.getLastWeeksData().toString();
-		return weeksData;
+		model.addAttribute("todaysConfirmed",todaysConfirmed);
+		model.addAttribute("todaysCancelled",todaysCancelled);
+		model.addAttribute("todaysReturned",todaysReturned);
 		
-	}
-	
-	@RequestMapping(value="/months_orders", method = RequestMethod.GET)
-	@ResponseBody
-	public String monthsData() {
+		model.addAttribute("todaysConfirmedChannels", todaysConfirmedChannels);
+		model.addAttribute("todaysCancelledChannels", todaysCancelledChannels);
+		model.addAttribute("todaysReturnedChannels",todaysReturnedChannels);
 		
-		String monthsData = dashboardService.getLastWeeksData().toString();
-		return monthsData;
+		
+		int weekConfirmed = dashboardService.getWeeksConfirmedOrdersSize();
+		int weekCancelled = dashboardService.getWeeksCancelledOrdersSize();
+		int weekReturned = dashboardService.getWeeksReturnedOrdersSize();
+		
+		List<String> weekConfirmedChannels = dashboardService.getWeeksConfirmedChannels();
+		List<String> weekCancelledChannels = dashboardService.getWeeksCancelledChannels();
+		List<String> weekReturnedChannels = dashboardService.getWeeksReturnedChannels();
+		
+		int monthsConfirmed = dashboardService.getMonthsConfirmedOrdersSize();
+		int monthsCancelled = dashboardService.getMonthsCancelledOrdersSize();
+		int monthsReturned = dashboardService.getMonthsReturnedOrdersSize();
+		
+		List<String> monthConfirmedChannels = dashboardService.getMonthsConfirmedChannels();
+		List<String> monthCancelledChannels = dashboardService.getMonthsCancelledChannels();
+		List<String> monthReturnedChannels = dashboardService.getMonthsReturnedChannels();
+		
+		
+		model.addAttribute("todaysConfirmed",todaysConfirmed);
+		model.addAttribute("todaysCancelled",todaysCancelled);
+		model.addAttribute("todaysReturned",todaysReturned);
+		
+		model.addAttribute("todaysConfirmedChannels", todaysConfirmedChannels);
+		model.addAttribute("todaysCancelledChannels", todaysCancelledChannels);
+		model.addAttribute("todaysReturnedChannels",todaysReturnedChannels);
+		
+		
+		model.addAttribute("weekConfirmed",weekConfirmed);
+		model.addAttribute("weekCancelled",weekCancelled);
+		model.addAttribute("weekReturned",weekReturned);
+		
+		model.addAttribute("weekConfirmedChannels", weekConfirmedChannels);
+		model.addAttribute("weekCancelledChannels", weekCancelledChannels);
+		model.addAttribute("weekReturnedChannels",weekReturnedChannels);
+		
+		
+		model.addAttribute("monthsConfirmed",monthsConfirmed);
+		model.addAttribute("monthsCancelled",monthsCancelled);
+		model.addAttribute("monthsReturned",monthsReturned);
+		
+		model.addAttribute("monthConfirmedChannels", monthConfirmedChannels);
+		model.addAttribute("monthCancelledChannels", monthCancelledChannels);
+		model.addAttribute("monthReturnedChannels",monthReturnedChannels);
+		
+		model.addAttribute("products", products);
+		model.addAttribute("items",dashboardService.getTrendingProductsThisMonth());
+		return "dashboard";
 		
 	}
 	
@@ -60,18 +129,6 @@ public class DashboardController {
 		String products = dashboardService.getUsersProducts(userId).toString();
 		return products;
 		
-	}
-	
-	@RequestMapping(value="trendingProducts",method=RequestMethod.GET)
-	@ResponseBody
-	public String getTrendingProductsThisMonth() {
-		
-		return dashboardService.getTrendingProductsThisMonth().toString();
-		
-	}
-	@RequestMapping(value="/contact")
-	public ModelAndView contact() {
-		return new ModelAndView("contact");
 	}
 
 }

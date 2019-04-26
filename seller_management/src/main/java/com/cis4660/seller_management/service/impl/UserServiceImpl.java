@@ -19,19 +19,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUsers() {
-//		List<User> userList = userDao.getAllUsers();
-//		for(User user :userList )
-//		{
-//		System.out.println(user);
-//		}
 		return userDao.getAllUsers();
-			
-		
 	}
 
 	@Override
 	public User getUserById(String userId) {
 		return userDao.getUserById(userId);
+	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+		return userDao.getUserByEmail(email);
 	}
 
 }

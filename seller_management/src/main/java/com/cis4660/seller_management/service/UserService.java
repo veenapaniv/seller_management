@@ -8,7 +8,7 @@ import com.cis4660.seller_management.model.User;
 
 @Service
 public interface UserService {
-	//void insertUser(User user);
 	List<User> getAllUsers();
 	User getUserById(String userId);
+	User getUserByEmail(String email);
 }

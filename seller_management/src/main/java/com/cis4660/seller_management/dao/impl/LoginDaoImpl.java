@@ -65,8 +65,6 @@ public class LoginDaoImpl  extends JdbcDaoSupport implements LoginDao {
 			public User mapRow(ResultSet rs, int rwNumber) throws SQLException {
 				User user = new User();
 				user.setUserId(rs.getString("userId"));
-//				user.setUsername(rs.getString("username"));
-//				user.setPassword(rs.getString("password"));
 				return user;
 			}
 		});

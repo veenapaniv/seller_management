@@ -37,12 +37,13 @@
                      <label for="pwd">Password:</label>
                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
                   </div>
-                  <div class="form-group">
-                     <p><span><a href="#" id="signup">Not registered yet? Click here to register!</a></span> </p>
-                     <!-- <p><span><a href="#">Forgot Password</a></span> </p> -->
-                  </div>
                   <div class="col-md-12 text-center"> 
                      <button id="login-submit" name="login-submit" class="btn btn-primary">Login</button> 
+                  </div>
+               </form>
+               <form id="signUpForm" action="sign_up_action" method="GET">
+               	 <div class="form-group">
+                     <p><span><a href="sign_up_action" id="signup">Not registered yet? Click here to register!</a></span> </p>                   
                   </div>
                </form>
             </div>

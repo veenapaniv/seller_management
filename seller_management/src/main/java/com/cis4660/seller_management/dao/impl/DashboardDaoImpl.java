@@ -104,14 +104,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -7);
-		System.out.println("Date = "+ cal.getTime());
 		java.util.Date date = cal.getTime();
 		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
 		
 		//get one day after current date - current date not fetching proper results in the query
 		Calendar calCurr = Calendar.getInstance();
 		cal.add(Calendar.DATE, +1);
-		System.out.println("Date = "+ calCurr.getTime());
 		java.util.Date currDate = calCurr.getTime();
 		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 		
@@ -126,14 +124,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -7);
-		System.out.println("Date = "+ cal.getTime());
 		java.util.Date date = cal.getTime();
 		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
 		
 		//get one day after current date - current date not fetching proper results in the query
 		Calendar calCurr = Calendar.getInstance();
 		cal.add(Calendar.DATE, +1);
-		System.out.println("Date = "+ calCurr.getTime());
 		java.util.Date currDate = calCurr.getTime();
 		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 		
@@ -148,14 +144,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -7);
-		System.out.println("Date = "+ cal.getTime());
 		java.util.Date date = cal.getTime();
 		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
 		
 		//get one day after current date - current date not fetching proper results in the query
 		Calendar calCurr = Calendar.getInstance();
 		cal.add(Calendar.DATE, +1);
-		System.out.println("Date = "+ calCurr.getTime());
 		java.util.Date currDate = calCurr.getTime();
 		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 		
@@ -171,14 +165,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.DATE, -30);
-				System.out.println("Date = "+ cal.getTime());
 				java.util.Date date = cal.getTime();
 				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
 				
 				//get one day after current date - current date not fetching proper results in the query
 				Calendar calCurr = Calendar.getInstance();
 				cal.add(Calendar.DATE, +1);
-				System.out.println("Date = "+ calCurr.getTime());
 				java.util.Date currDate = calCurr.getTime();
 				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 				
@@ -193,14 +185,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.DATE, -30);
-				System.out.println("Date = "+ cal.getTime());
 				java.util.Date date = cal.getTime();
 				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
 				
 				//get one day after current date - current date not fetching proper results in the query
 				Calendar calCurr = Calendar.getInstance();
 				cal.add(Calendar.DATE, +1);
-				System.out.println("Date = "+ calCurr.getTime());
 				java.util.Date currDate = calCurr.getTime();
 				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 				
@@ -215,14 +205,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.DATE, -30);
-				System.out.println("Date = "+ cal.getTime());
 				java.util.Date date = cal.getTime();
 				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
 				
 				//get one day after current date - current date not fetching proper results in the query
 				Calendar calCurr = Calendar.getInstance();
 				cal.add(Calendar.DATE, +1);
-				System.out.println("Date = "+ calCurr.getTime());
 				java.util.Date currDate = calCurr.getTime();
 				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 				
@@ -304,14 +292,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	}
 	
 	@Override
-	public HashMap<String,Float> getUsersProducts(String userID){
+	public List<Inventory> getUsersProducts(String userID){
 		
 		String productList = "Select productName,Amount from Inventory where userId = '"+userID+"'";
-		
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(productList);
 		List<Inventory> products = new ArrayList<Inventory>();
-//		List<String> productName = new ArrayList<String> ();
-		HashMap<String,Float> productCost = new HashMap<String,Float>();
+
 		for(Map<String, Object> row:rows) {
 			Inventory product = new Inventory();
 			product.setProductName((String)row.get("productName"));
@@ -319,14 +305,7 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 			products.add(product);
 		}
 		
-		
-		for(Inventory product : products) {
-//			String currProdName = product.getProductName();
-//			productName.add(currProdName);
-			productCost.put(product.getProductName(),product.getAmount() );
-		}
-		System.out.println("products id list= "+products);
-		return productCost;
+		return products;
 		
 	}
 	
@@ -387,14 +366,12 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		//Get calendar instance to get date prior to 7 days.
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -30);
-		System.out.println("Date = "+ cal.getTime());
 		java.util.Date date = cal.getTime();
 		java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
 		
 		//get one day after current date - current date not fetching proper results in the query
 		Calendar calCurr = Calendar.getInstance();
 		cal.add(Calendar.DATE, +1);
-		System.out.println("Date = "+ calCurr.getTime());
 		java.util.Date currDate = calCurr.getTime();
 		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 		
@@ -412,11 +389,5 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		
 		return productSales;
 	}
-	
-//	select orders.productId,Inventory.productName,
-//
-//	SUM(sales_Qty) From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('2019-03-30%' AS DATE) and order_date <= CAST('2019-04-14%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and
-//
-//	orders.productID IN (select productID from Inventory where userId = 1) GROUP BY orders.productId;
 
 }

@@ -25,168 +25,106 @@ public class DashboardServiceImpl implements DashboardService {
 	private final Logger log = LoggerFactory.getLogger(DashboardServiceImpl.class);
 	@Autowired
 	DashboardDao dashboardDao;
-
+	
 	@Override
-	public JSONObject getTodaysData() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		Gson gson = gsonBuilder.create();
-		//get the sales data
-		int confirmedSales = dashboardDao.getTodaysConfirmedOrders().size();
-		int cancelledSales = dashboardDao.getTodaysCancelledOrders().size();
-		int returnedSales = dashboardDao.getTodaysReturnedOrders().size();
-		
-		//get channels data
-		List<String> confirmedChannelList = dashboardDao.getTodaysConfirmedChannels();
-		List<String> cancelledChannelList = dashboardDao.getTodaysCancelledChannels();
-		List<String> returnedChannelList = dashboardDao.getTodaysReturnedChannels();
-		
-		//convert them to String
-		String confirmedChannelJson = gson.toJson(confirmedChannelList);
-		String cancelledChannelJson = gson.toJson(cancelledChannelList);
-		String returnedChannelJson = gson.toJson(returnedChannelList);
-		
-		//Put all data into JSONObject
-		JSONObject todaysJson = new JSONObject();
-		todaysJson.put("confirmedSales", confirmedSales);
-		todaysJson.put("cancelledSales", cancelledSales);
-		todaysJson.put("returnedSales", returnedSales);
-		JSONArray confirmedChannelArray = new JSONArray(confirmedChannelJson);
-		JSONArray cancelledChannelArray = new JSONArray(cancelledChannelJson);
-		JSONArray returnedChannelArray = new JSONArray(returnedChannelJson);
-		todaysJson.put("confirmedChannels", confirmedChannelArray);
-		todaysJson.put("cancelledChannels", cancelledChannelArray);
-		todaysJson.put("returnedChannels", returnedChannelArray);
-		
-		return todaysJson;
-		
+	public int getTodaysConfirmedOrdersSize() {
+		return dashboardDao.getTodaysConfirmedOrders().size();
 	}
 	
 	@Override
-	public JSONObject getLastWeeksData() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		Gson gson = gsonBuilder.create();
-		//get the sales data
-		int confirmedSales = dashboardDao.getLastWeeksConfirmedOrders().size();
-		int cancelledSales = dashboardDao.getLastWeeksCancelledOrders().size();
-		int returnedSales = dashboardDao.getLastWeeksReturnedOrders().size();
-		
-		//get channels data
-		List<String> confirmedChannelList = dashboardDao.getWeeksConfirmedChannels();
-		List<String> cancelledChannelList = dashboardDao.getWeeksCancelledChannels();
-		List<String> returnedChannelList = dashboardDao.getWeeksReturnedChannels();
-		
-		//convert them to String
-		String confirmedChannelJson = gson.toJson(confirmedChannelList);
-		String cancelledChannelJson = gson.toJson(cancelledChannelList);
-		String returnedChannelJson = gson.toJson(returnedChannelList);
-		
-		//Put all data into JSONObject
-		JSONObject weeksJson = new JSONObject();
-		weeksJson.put("confirmedSales", confirmedSales);
-		weeksJson.put("cancelledSales", cancelledSales);
-		weeksJson.put("returnedSales", returnedSales);
-		JSONArray confirmedChannelArray = new JSONArray(confirmedChannelJson);
-		JSONArray cancelledChannelArray = new JSONArray(cancelledChannelJson);
-		JSONArray returnedChannelArray = new JSONArray(returnedChannelJson);
-		weeksJson.put("confirmedChannels", confirmedChannelArray);
-		weeksJson.put("cancelledChannels", cancelledChannelArray);
-		weeksJson.put("returnedChannels", returnedChannelArray);
-		
-		return weeksJson;
-		
+	public int getTodaysCancelledOrdersSize() {
+		return dashboardDao.getTodaysCancelledOrders().size();
 	}
 	
 	@Override
-	public JSONObject getLastMonthsData() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		Gson gson = gsonBuilder.create();
-		//get the sales data
-		int confirmedSales = dashboardDao.getLastMonthsConfirmedOrders().size();
-		int cancelledSales = dashboardDao.getLastMonthsCancelledOrders().size();
-		int returnedSales = dashboardDao.getLastMonthsReturnedOrders().size();
-		
-		//get channels data
-		List<String> confirmedChannelList = dashboardDao.getMonthsConfirmedChannels();
-		List<String> cancelledChannelList = dashboardDao.getMonthsCancelledChannels();
-		List<String> returnedChannelList = dashboardDao.getMonthsReturnedChannels();
-		
-		//convert them to String
-		String confirmedChannelJson = gson.toJson(confirmedChannelList);
-		String cancelledChannelJson = gson.toJson(cancelledChannelList);
-		String returnedChannelJson = gson.toJson(returnedChannelList);
-		
-		//Put all data into JSONObject
-		JSONObject monthsJson = new JSONObject();
-		monthsJson.put("confirmedSales", confirmedSales);
-		monthsJson.put("cancelledSales", cancelledSales);
-		monthsJson.put("returnedSales", returnedSales);
-		JSONArray confirmedChannelArray = new JSONArray(confirmedChannelJson);
-		JSONArray cancelledChannelArray = new JSONArray(cancelledChannelJson);
-		JSONArray returnedChannelArray = new JSONArray(returnedChannelJson);
-		monthsJson.put("confirmedChannels", confirmedChannelArray);
-		monthsJson.put("cancelledChannels", cancelledChannelArray);
-		monthsJson.put("returnedChannels", returnedChannelArray);
-		
-		
-		return monthsJson;
-		
+	public int getTodaysReturnedOrdersSize() {
+		return dashboardDao.getTodaysReturnedOrders().size();
 	}
 	
 	@Override
-	public JSONObject getUsersProducts(String userId) {
-//		JSONObject productsJson = new JSONObject();
-//		GsonBuilder gsonBuilder = new GsonBuilder();
-//		Gson gson = gsonBuilder.create();
-		JSONObject productCostJson = new JSONObject();
-		JSONObject eachProductSales = new JSONObject();
-		String str = "[{";
-
-		
-		HashMap<String,Float> productCostList = dashboardDao.getUsersProducts(userId);
-//		String productIdStr = gson.toJson(productIdList);
-//		JSONArray productIdArray = new JSONArray(productIdStr);
-//		productsJson.put("productId", productIdArray);
-//		System.out.println("this is users products"+productsJson);
-		
-		for(Entry<String, Float> productCost :productCostList.entrySet()) {
-			 str = str+ "\"name\""+":"+productCost.getKey();
-			 str = str+","+"\"cost\""+":"+productCost.getValue();
-			 str = str+"}]";
-			 JSONArray productSalesArr = new JSONArray(str);
-			 eachProductSales.put("product", productSalesArr);
-			
+	public List<String> getTodaysConfirmedChannels(){
+		return dashboardDao.getTodaysConfirmedChannels();
+	}
+	@Override
+	public List<String> getTodaysCancelledChannels(){
+		return dashboardDao.getTodaysCancelledChannels();
+	}
+	@Override
+	public List<String> getTodaysReturnedChannels(){
+		return dashboardDao.getTodaysReturnedChannels();
+	}
+	
+	//weeks data
+	@Override
+	public int getWeeksConfirmedOrdersSize() {
+		return dashboardDao.getLastWeeksConfirmedOrders().size();
+	}
+	
+	@Override
+	public int getWeeksCancelledOrdersSize() {
+		return dashboardDao.getLastWeeksCancelledOrders().size();
+	}
+	
+	@Override
+	public int getWeeksReturnedOrdersSize() {
+		return dashboardDao.getLastWeeksReturnedOrders().size();
+	}
+	
+	@Override
+	public List<String> getWeeksConfirmedChannels(){
+		return dashboardDao.getWeeksConfirmedChannels();
+	}
+	@Override
+	public List<String> getWeeksCancelledChannels(){
+		return dashboardDao.getWeeksCancelledChannels();
+	}
+	@Override
+	public List<String> getWeeksReturnedChannels(){
+		return dashboardDao.getWeeksReturnedChannels();
+	}
+	
+	//months data
+		@Override
+		public int getMonthsConfirmedOrdersSize() {
+			return dashboardDao.getLastMonthsConfirmedOrders().size();
 		}
 		
+		@Override
+		public int getMonthsCancelledOrdersSize() {
+			return dashboardDao.getLastMonthsCancelledOrders().size();
+		}
+		
+		@Override
+		public int getMonthsReturnedOrdersSize() {
+			return dashboardDao.getLastMonthsReturnedOrders().size();
+		}
+		
+		@Override
+		public List<String> getMonthsConfirmedChannels(){
+			return dashboardDao.getMonthsConfirmedChannels();
+		}
+		@Override
+		public List<String> getMonthsCancelledChannels(){
+			return dashboardDao.getMonthsCancelledChannels();
+		}
+		@Override
+		public List<String> getMonthsReturnedChannels(){
+			return dashboardDao.getMonthsReturnedChannels();
+		}
 	
-		productCostJson.put("productCost", eachProductSales);  
-		return productCostJson;
+	@Override
+	public List<Inventory> getUsersProducts(String userId) {
+		
+		return dashboardDao.getUsersProducts(userId);
+
 	}
 	
 	@Override
-	public JSONObject getTrendingProductsThisMonth() {
+	public Map getTrendingProductsThisMonth() {
 		
-		JSONObject productSales = new JSONObject();
-		JSONObject eachProductSales = new JSONObject();
-		String str = "[{";
-
+		Map<String,Integer> productSalesMap = dashboardDao.getTrendingProductsThisMonth();
 		
-		HashMap<String,Integer> productSalesMap = dashboardDao.getTrendingProductsThisMonth();
-
-		for(Entry<String, Integer> productSale :productSalesMap.entrySet()) {
-			 str = str+ "\"name\""+":"+productSale.getKey();
-			 str = str+","+"\"sales\""+":"+productSale.getValue();
-			 str = str+"}]";
-			 JSONArray productSalesArr = new JSONArray(str);
-			 eachProductSales.put("product", productSalesArr);
-			
-		}
-		
-	
-		productSales.put("productSales", eachProductSales);  
-		System.out.println("productSales"+productSales);
-		
-		//System.out.println("productSalesJson"+productSales.toString());
-		return productSales;
+		return productSalesMap;
 		
 	}
 

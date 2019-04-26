@@ -1,5 +1,8 @@
 package com.cis4660.seller_management.controllers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,10 +21,13 @@ public class RegistrationController {
 
 	@RequestMapping(value="/signup")
 	public ModelAndView signUp() {
-		System.out.println("I'm here");
 		return new ModelAndView("signup");
 	}
 	
+	 @RequestMapping(value = "/sign_up_action", method = RequestMethod.GET)
+	    public String redirect() {
+	        return "redirect:signup";
+	    }
 	
 	
 	@RequestMapping(value="/signup", method = RequestMethod.POST)
@@ -30,7 +36,6 @@ public class RegistrationController {
 			model.put("errorMessage", "Registration Unsuccessful");
 			return "login";
 		}
-		
 		return "login";
 		
 	}

@@ -38,7 +38,6 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 	@Override
 	public boolean registerUser(String emailId, String password, String firstname, String lastname, String phone,
 			String address) {
-		//System.out.println(emailId+" "+password+" "+firstname+" "+lastname+" "+phone);
 		long tel = 0;
 		try {
 		 tel = Long.parseLong(phone);
@@ -67,7 +66,6 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 				//get number of users, in order to insert the correct userID
 				String getUserCountSql = "select * from User";
 				List<Map<String,Object>> number_of_users= jdbcTemplate.queryForList(getUserCountSql);
-				System.out.println(number_of_users.size());
 				
 				//userId will be 1 more than the count of users in the system
 				int userId = number_of_users.size()+1;
@@ -103,14 +101,11 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 				}
 			
 			if(user.getUsername().equals(emailId)) {
-				//output error page or email already exists message
 				return true;
 			}
 		}
 		}
 		catch(Exception e) {
-			//output an error page
-			//e.printStackTrace();
 		}
 		return false;
 	}

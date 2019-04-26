@@ -1,21 +1,41 @@
 package com.cis4660.seller_management.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.cis4660.seller_management.model.Inventory;
 import com.cis4660.seller_management.model.Order;
 
 public interface DashboardService {
-
-	//public boolean loadAllDashboardData();
+	//public JSONObject getUsersProducts(String userId);
+	public List<Inventory> getUsersProducts(String userId);
+	public Map getTrendingProductsThisMonth();
+	int getTodaysConfirmedOrdersSize();
+	int getTodaysCancelledOrdersSize();
+	int getTodaysReturnedOrdersSize();
 	
-	public JSONObject getLastWeeksData();
-	public JSONObject getLastMonthsData();
-	public JSONObject getTodaysData();
-	public JSONObject getUsersProducts(String userId);
-	public JSONObject getTrendingProductsThisMonth();
+	List<String> getTodaysConfirmedChannels();
+	List<String> getTodaysCancelledChannels();
+	List<String> getTodaysReturnedChannels();
+	
+	int getWeeksConfirmedOrdersSize();
+	int getWeeksCancelledOrdersSize();
+	int getWeeksReturnedOrdersSize();
+	
+	List<String> getWeeksConfirmedChannels();
+	List<String> getWeeksCancelledChannels();
+	List<String> getWeeksReturnedChannels();
+	
+	int getMonthsConfirmedOrdersSize();
+	int getMonthsCancelledOrdersSize();
+	int getMonthsReturnedOrdersSize();
+	
+	List<String> getMonthsConfirmedChannels();
+	List<String> getMonthsCancelledChannels();
+	List<String> getMonthsReturnedChannels();
 	
 	
 

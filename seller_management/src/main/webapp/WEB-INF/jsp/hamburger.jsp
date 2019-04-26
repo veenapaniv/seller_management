@@ -11,6 +11,11 @@
          <nav class="seller-nav">
             <span class="seller-heading">SELLER MANAGEMENT</span>
             <span class="seller-hamburger" id="openHamburger">&#9776;</span>
+            <form id="logoutForm" action="sign_out_action" method="GET">
+            <ul class="nav navbar-nav navbar-right">
+                  <li><span id="seller-logout"><a href="sign_out_action" id="seller-logout_action" style="list-style: none;color: white;font-size: 20px;">Logout</a></span> </li>
+            </ul>
+            </form>
          </nav>
       </div>
       <div id="hamburgerClass" class="hamburger">
