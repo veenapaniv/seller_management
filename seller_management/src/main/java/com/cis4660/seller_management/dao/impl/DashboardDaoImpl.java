@@ -379,7 +379,7 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		java.util.Date currDate = calCurr.getTime();
 		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
 		
-		String productSql = "select orders.productId,Inventory.productName AS productName, SUM(sales_Qty) AS salesQty From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and orders.productID IN (select productID from Inventory where userId = 1) GROUP BY orders.productId ORDER BY 'salesQty' DESC LIMIT 10";
+		String productSql = "select orders.productId,Inventory.productName AS productName, SUM(sales_Qty) AS salesQty From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and orders.productID IN (select productID from Inventory where userId = '1') GROUP BY orders.productId ORDER BY 'salesQty' DESC LIMIT 10";
 		
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(productSql);
 		List<Inventory> products = new ArrayList<Inventory>();

@@ -31,11 +31,15 @@
                <form action="/login" method="POST">
                   <div class="form-group">
                      <label for="email">Email:</label>
-                     <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                     <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="${username}">
                   </div>
                   <div class="form-group">
                      <label for="pwd">Password:</label>
-                     <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                     <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" value="${password }">
+                  </div>
+                  <div class="form-group">
+                  	 <input type="checkbox"  name="remember">
+                     <label for="pwd">Remember Me:</label>
                   </div>
                   <div class="col-md-12 text-center"> 
                      <button id="login-submit" name="login-submit" class="btn btn-primary">Login</button> 

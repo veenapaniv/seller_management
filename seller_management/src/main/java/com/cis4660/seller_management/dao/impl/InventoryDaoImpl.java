@@ -114,7 +114,8 @@ public class InventoryDaoImpl extends JdbcDaoSupport implements InventoryDao{
             statement.setFloat(5, inventory.getAmount());
             statement.setFloat(6, inventory.getShippingRate());
             statement.setTimestamp(7, getCurrentDate());
-            statement.setInt(8,  1);
+            statement.setString(8, inventory.getUserId());
+            System.out.println("userId: " +inventory.getUserId());
             File uploadedFile = new File("C:\\Users\\Swathi Uppu\\Desktop\\Sem2\\Java\\Project\\SellerManagement\\seller_management\\src\\main\\resources\\static\\images\\"+inventory.getUploadedFile().getPath());
             FileInputStream inputStream= new FileInputStream(uploadedFile);
             statement.setBlob(3, inputStream);

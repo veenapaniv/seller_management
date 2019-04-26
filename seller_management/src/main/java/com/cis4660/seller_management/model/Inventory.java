@@ -16,7 +16,14 @@ public class Inventory {
 	private List<String> channels;
 	private int sold;
 	private int returned;
+	private String userId;
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public List<String> getChannels() {
 		return channels;
 	}

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cis4660.seller_management.model.Inventory;
 import com.cis4660.seller_management.service.InventoryService;
+import com.cis4660.seller_management.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -85,7 +89,7 @@ public class InventoryController {
 	
 	//Inserting a product in database
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-	public String processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam("channels") String[] channels, @ModelAttribute("inventory") Inventory inventory) {
+	public String processRequest(@RequestParam("quantity") int quantity, @RequestParam("file") File file, @RequestParam("amount") float amount, @RequestParam("shipping") float shipping, @RequestParam("productName") String productName, @RequestParam("channels") String[] channels, @ModelAttribute("inventory") Inventory inventory, HttpServletRequest request) {
 		inventory = new Inventory();
 		List<String> channelList = new ArrayList<String>();
 		for(int i=0;i<channels.length;i++) {
@@ -97,6 +101,8 @@ public class InventoryController {
 		inventory.setUploadedFile(file);
 		inventory.setShippingRate(shipping);
 		inventory.setProductName(productName);
+		String userId = CookieUtil.getCookieValue("userId", "", request);
+		inventory.setUserId(userId);
 		inventoryService.insertProduct(inventory);
 		return "redirect:/inventory";
 	}
