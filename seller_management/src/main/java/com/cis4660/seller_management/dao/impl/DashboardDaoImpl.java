@@ -76,13 +76,9 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	
 	@Override
 	public List<Order> getTodaysCancelledOrders() {
-		// create a java calendar instance
 		Calendar calendar = Calendar.getInstance();
 
-		// get a java date (java.util.Date) from the Calendar instance.
-		// this java date will represent the current date, or "now".
 		java.util.Date currentDate = calendar.getTime();
-		// now, create a java.sql.Date from the java.util.Date
 		java.sql.Date date = new java.sql.Date(currentDate.getTime());
 		String ordersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date like '"+date+"%' and status = 'cancelled' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 		
@@ -106,16 +102,10 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	@Override
 	public List<Order> getLastWeeksConfirmedOrders() {
 		//Get calendar instance to get date prior to 7 days.
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -7);
-		java.util.Date date = cal.getTime();
-		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
+		java.sql.Date sevenDaysdate = getDate(-7);
 		
 		//get one day after current date - current date not fetching proper results in the query
-		Calendar calCurr = Calendar.getInstance();
-		cal.add(Calendar.DATE, +1);
-		java.util.Date currDate = calCurr.getTime();
-		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+		java.sql.Date tomorrowDate = getDate(+1);
 		
 		String weekOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+sevenDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'confirmed' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 		
@@ -126,16 +116,10 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	@Override
 	public List<Order> getLastWeeksCancelledOrders() {
 		//Get calendar instance to get date prior to 7 days.
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -7);
-		java.util.Date date = cal.getTime();
-		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
+		java.sql.Date sevenDaysdate = getDate(-7);
 		
 		//get one day after current date - current date not fetching proper results in the query
-		Calendar calCurr = Calendar.getInstance();
-		cal.add(Calendar.DATE, +1);
-		java.util.Date currDate = calCurr.getTime();
-		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+		java.sql.Date tomorrowDate = getDate(+1);
 		
 		String weekOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+sevenDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'cancelled' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 		
@@ -146,16 +130,10 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	@Override
 	public List<Order> getLastWeeksReturnedOrders() {
 		//Get calendar instance to get date prior to 7 days.
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -7);
-		java.util.Date date = cal.getTime();
-		java.sql.Date sevenDaysdate = new java.sql.Date(date.getTime());
+		java.sql.Date sevenDaysdate = getDate(-7);
 		
 		//get one day after current date - current date not fetching proper results in the query
-		Calendar calCurr = Calendar.getInstance();
-		cal.add(Calendar.DATE, +1);
-		java.util.Date currDate = calCurr.getTime();
-		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+		java.sql.Date tomorrowDate = getDate(+1);
 		
 		String weekOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+sevenDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'returned' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 		
@@ -166,17 +144,11 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 
 	@Override
 	public List<Order> getLastMonthsConfirmedOrders() {
-		//Get calendar instance to get date prior to 7 days.
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.DATE, -30);
-				java.util.Date date = cal.getTime();
-				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
+		//Get calendar instance to get date prior to 30 days.
+				java.sql.Date thirtyDaysdate = getDate(-30);
 				
 				//get one day after current date - current date not fetching proper results in the query
-				Calendar calCurr = Calendar.getInstance();
-				cal.add(Calendar.DATE, +1);
-				java.util.Date currDate = calCurr.getTime();
-				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+				java.sql.Date tomorrowDate = getDate(+1);
 				
 				String monthOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'confirmed' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 				
@@ -186,17 +158,11 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	
 	@Override
 	public List<Order> getLastMonthsCancelledOrders() {
-		//Get calendar instance to get date prior to 7 days.
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.DATE, -30);
-				java.util.Date date = cal.getTime();
-				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
+		//Get calendar instance to get date prior to 30 days.
+				java.sql.Date thirtyDaysdate = getDate(-30);
 				
 				//get one day after current date - current date not fetching proper results in the query
-				Calendar calCurr = Calendar.getInstance();
-				cal.add(Calendar.DATE, +1);
-				java.util.Date currDate = calCurr.getTime();
-				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+				java.sql.Date tomorrowDate = getDate(+1);
 				
 				String monthOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'cancelled' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 				
@@ -207,16 +173,10 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	@Override
 	public List<Order> getLastMonthsReturnedOrders() {
 		//Get calendar instance to get date prior to 7 days.
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.DATE, -30);
-				java.util.Date date = cal.getTime();
-				java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
+				java.sql.Date thirtyDaysdate = getDate(-30);
 				
-				//get one day after current date - current date not fetching proper results in the query
-				Calendar calCurr = Calendar.getInstance();
-				cal.add(Calendar.DATE, +1);
-				java.util.Date currDate = calCurr.getTime();
-				java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+				//get one day after current date - current date not fetching proper results in the query				
+				java.sql.Date tomorrowDate = getDate(+1);
 				
 				String monthOrdersListSql = "Select Orders.ProductID as ProductId, OrderId, Status, Order_Date from Orders where order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'returned' and Orders.productId IN (Select productId from Inventory where userId = '1')";
 				
@@ -357,27 +317,11 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 	@Override
 	public HashMap<String,Integer> getTrendingProductsThisMonth(){
 		
-		//correct query
-//		select orders.productId,Inventory.productName AS productName, SUM(sales_Qty) AS salesQty 
-//		From Orders,Sales,Inventory 
-//		where orders.productId = inventory.productid and order_date >= CAST('2019-04-11%' AS DATE) 
-//			and order_date <= CAST('2019-04-14%' AS DATE) 
-//		    and status = 'confirmed' and orders.productID = sales.productID 
-//		    and orders.productID IN (select productID from Inventory where userId = 1) 
-//		GROUP BY orders.productId
-//		ORDER BY 'salesQty' DESC LIMIT 10;
-		
-		//Get calendar instance to get date prior to 7 days.
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -30);
-		java.util.Date date = cal.getTime();
-		java.sql.Date thirtyDaysdate = new java.sql.Date(date.getTime());
+		//Get calendar instance to get date prior to 30 days.
+		java.sql.Date thirtyDaysdate = getDate(-30);
 		
 		//get one day after current date - current date not fetching proper results in the query
-		Calendar calCurr = Calendar.getInstance();
-		cal.add(Calendar.DATE, +1);
-		java.util.Date currDate = calCurr.getTime();
-		java.sql.Date tomorrowDate = new java.sql.Date(currDate.getTime());
+		java.sql.Date tomorrowDate = getDate(+1);
 		
 		String productSql = "select orders.productId,Inventory.productName AS productName, SUM(sales_Qty) AS salesQty From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('"+thirtyDaysdate+"%' AS DATE) and order_date <= CAST('"+tomorrowDate+"%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and orders.productID IN (select productID from Inventory where userId = '1') GROUP BY orders.productId ORDER BY 'salesQty' DESC LIMIT 10";
 		
@@ -404,11 +348,14 @@ public class DashboardDaoImpl extends JdbcDaoSupport implements DashboardDao {
 		}
 		return content;
 	}
-	
-//	select orders.productId,Inventory.productName,
-//
-//	SUM(sales_Qty) From Orders,Sales,Inventory where orders.productId = inventory.productid and order_date >= CAST('2019-03-30%' AS DATE) and order_date <= CAST('2019-04-14%' AS DATE) and status = 'confirmed' and orders.productID = sales.productID and
-//
-//	orders.productID IN (select productID from Inventory where userId = 1) GROUP BY orders.productId;
+	private java.sql.Date getDate(int days) {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, days);
+		java.util.Date date = cal.getTime();
+		java.sql.Date newDate = new java.sql.Date(date.getTime());
+		return newDate;
+		
+	}
 
 }

@@ -54,8 +54,10 @@ public class LoginController {
 	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String handleLogin(@RequestParam String email,@RequestParam String pwd, @RequestParam(value="remember", required=false) boolean remember, ModelMap model,HttpServletResponse response) {
 		System.out.println("remember: "+remember);
+	
 		if(!service.validateCredentials(email, pwd)) {
-			model.put("errorMessage", "Invalid Credentials");
+			//model.put("errorMessage", "Invalid Credentials");
+			model.addAttribute("errorMessage","Invalid Credentials");
 			return "login";
 		}
 		if(remember) {
@@ -82,7 +84,6 @@ public class LoginController {
 		try {
 			map = mapper.readValue(contact, Map.class);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

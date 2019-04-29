@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,9 @@ public class LoginDaoImpl  extends JdbcDaoSupport implements LoginDao {
 	@Override
 	public boolean validatePassword(String email,String password) {
 		String sql = "SELECT * FROM user WHERE username = ?";
-		User currentUser = (User)getJdbcTemplate().queryForObject(sql, new Object[] {email},new RowMapper<User>() {
+		User currentUser = new User();
+		try {
+		currentUser = (User)getJdbcTemplate().queryForObject(sql, new Object[] {email},new RowMapper<User>() {
 			@Override
 			public User mapRow(ResultSet rs, int rwNumber) throws SQLException {
 				User user = new User();
@@ -47,6 +50,11 @@ public class LoginDaoImpl  extends JdbcDaoSupport implements LoginDao {
 				return user;
 			}
 		});
+		}
+		catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return false;
+		}
 		if(currentUser.getPassword().equals(password))
 		{
 			return true;

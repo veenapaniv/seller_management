@@ -10,7 +10,7 @@ import com.cis4660.seller_management.model.Inventory;
 import com.cis4660.seller_management.model.Order;
 
 public interface DashboardService {
-	//public JSONObject getUsersProducts(String userId);
+
 	public List<Inventory> getUsersProducts(String userId);
 	public Map getTrendingProductsThisMonth();
 	int getTodaysConfirmedOrdersSize();

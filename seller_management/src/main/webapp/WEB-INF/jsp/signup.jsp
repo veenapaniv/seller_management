@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
    <head>
@@ -30,27 +31,27 @@
                <form action="/signup" method="POST">
                   <div class="form-group">
                      <label for="emailId">Username:</label>
-                     <input type="email" class="form-control" id="emailId" placeholder="Enter your email" name="emailId">
+                     <input type="email" required class="form-control" id="emailId" placeholder="Enter your email" name="emailId">
                   </div>
                   <div class="form-group">
                      <label for="password">Password:</label>
-                     <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                     <input type="password" required class="form-control" id="password" placeholder="Enter password" name="password">
                   </div>
                   <div class="form-group">
                      <label for="firstname">FirstName:</label>
-                     <input type="text" class="form-control" id="firstname" placeholder="Enter firsname" name="firstname">
+                     <input type="text" required class="form-control" id="firstname" placeholder="Enter firsname" name="firstname">
                   </div>
                   <div class="form-group">
                      <label for="lastname">LastName:</label>
-                     <input type="text" class="form-control" id="lastname" placeholder="Enter lastname" name="lastname">
+                     <input type="text" required class="form-control" id="lastname" placeholder="Enter lastname" name="lastname">
                   </div>
                   <div class="form-group">
                      <label for="phone">Phone:</label>
-                     <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" name="phone">
+                     <input type="tel" required class="form-control" id="phone" placeholder="Enter phone number" name="phone">
                   </div>
                   <div class="form-group">
                      <label for="address">Address:</label>
-                     <input type="text" class="form-control" id="address" placeholder="Enter your address" name="address">
+                     <input type="text" required class="form-control" id="address" placeholder="Enter your address" name="address">
                   </div>
                   <div class="col-md-12 text-center"> 
                      <button id="signup-submit" name="signup-submit" class="btn btn-primary">Register</button> 
