@@ -29,8 +29,8 @@
          <div class="panel panel-default">
             <div class="panel-body">
                <div class="logo-div" align="center"><img src="images/logo.png" class="img-rounded" id="logo" alt="SellerManagement"></div>
-               <p id="error-message">
-				   ${errorMessage}  
+               <p >
+				   ${errorMsg}  
                </p>
                <form action="/login" method="POST">
                   <div class="form-group">

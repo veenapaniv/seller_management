@@ -53,11 +53,12 @@ public class LoginController {
 	
 	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String handleLogin(@RequestParam String email,@RequestParam String pwd, @RequestParam(value="remember", required=false) boolean remember, ModelMap model,HttpServletResponse response) {
-		System.out.println("remember: "+remember);
+	
 	
 		if(!service.validateCredentials(email, pwd)) {
 			//model.put("errorMessage", "Invalid Credentials");
-			model.addAttribute("errorMessage","Invalid Credentials");
+			String errorMsg = "Invalid Credentials";
+			model.addAttribute("errorMsg", errorMsg);
 			return "login";
 		}
 		if(remember) {
