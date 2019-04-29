@@ -13,8 +13,6 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="css/login.css">
       <link rel="stylesheet" href="css/dashboard.css">
-      <script src="js/login.js"></script>
-      <script src="js/signup.js"></script>
    </head>
    <body>
       <div class="seller-header">

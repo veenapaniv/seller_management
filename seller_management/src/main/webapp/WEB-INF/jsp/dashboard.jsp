@@ -16,8 +16,6 @@
    </head>
    <body>
         
-      <div id="loggedInUser" style="display:none">${userID}</div>
-        
       <jsp:include page="hamburger.jsp" />
       <div class="row">
          <div class="col col-md-12 seller-statistics">

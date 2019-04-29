@@ -64,7 +64,7 @@ public class LoginController {
 		if(remember) {
 			rememberUsernamePwd(email,pwd, response);
 		}
-		model.put("userID", service.getUserId(email));
+		
 		CookieUtil userCookie = new CookieUtil("userId",userService.getUserByEmail(email).getUserId());
 		response.addCookie(userCookie);
 		return "redirect:dashboard";
