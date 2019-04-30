@@ -54,25 +54,28 @@ public class LoginController {
 	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String handleLogin(@RequestParam String email,@RequestParam String pwd, @RequestParam(value="remember", required=false) boolean remember, ModelMap model,HttpServletResponse response) {
 	
-	
+		//validate the credentials and display error message if the user credentials are wrong	
 		if(!service.validateCredentials(email, pwd)) {
 			//model.put("errorMessage", "Invalid Credentials");
 			String errorMsg = "Invalid Credentials";
 			model.addAttribute("errorMsg", errorMsg);
 			return "login";
 		}
+		//if remember is true, call the remember user method
 		if(remember) {
 			rememberUsernamePwd(email,pwd, response);
 		}
-		
+		//add user's emailId to the cookie for further usage
 		CookieUtil userCookie = new CookieUtil("userId",userService.getUserByEmail(email).getUserId());
 		response.addCookie(userCookie);
+		//finally if everything is right, redirect an authorized user to the dashboard
 		return "redirect:dashboard";
 	}
 	
 	public void rememberUsernamePwd(String email, String pwd, HttpServletResponse response) {
 		CookieUtil usernameCookie = new CookieUtil("seller-username", email);
 		CookieUtil pwdCookie = new CookieUtil("seller-pwd", pwd);
+		//if remember me is true, then add username and password to the cookie.
 		response.addCookie(usernameCookie);
 		response.addCookie(pwdCookie);
 	}
@@ -83,12 +86,13 @@ public class LoginController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> map = null;
 		try {
+			//read the values in contact.json file into a Map<String,Object>
 			map = mapper.readValue(contact, Map.class);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
+		}	
 		ModelAndView model = new ModelAndView("contact");
+		//add the map to the contact model created
 		model.addObject("contact", map);
 		return model;
 	}

@@ -13,6 +13,7 @@ public class LogoutController {
 	
 	@RequestMapping(value="/sign_out_action",method = RequestMethod.GET)
 	public String handleLogout(HttpServletRequest request) {
+		//get the userId cookie and clear it before logging out the user
 		Cookie[] cookies = request.getCookies();
 		if(cookies != null) {
 			for(Cookie c : cookies) {
@@ -22,6 +23,7 @@ public class LogoutController {
 				}
 			}
 		}
+		//redirect to login page
 		return "redirect:login";
 	}
 

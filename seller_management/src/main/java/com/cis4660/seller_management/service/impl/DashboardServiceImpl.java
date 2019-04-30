@@ -129,7 +129,6 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 	@Override
 	public String getContact() {
-		// TODO Auto-generated method stub
 		return dashboardDao.getContact();
 	}
 

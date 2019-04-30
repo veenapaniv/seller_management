@@ -27,7 +27,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	private void initialize(){
 		setDataSource(dataSource);
 	}
-
+	/**
+	 * Returns a list of all users
+	 */
 	@Override
 	public List<User> getAllUsers() {
 		String sql = "SELECT * FROM user";
@@ -45,6 +47,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		
 	}
 
+	/**
+	 * Returns a user object by ID
+	 */
 	@Override
 	public User getUserById(String userId) {
 		String sql = "SELECT * FROM user WHERE userId = ?";
@@ -60,6 +65,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		
 	}
 	
+	/**
+	 * Get User object by email
+	 */
 	@Override
 	public User getUserByEmail(String email) {
 		String sql = "SELECT * FROM user WHERE username = ?";

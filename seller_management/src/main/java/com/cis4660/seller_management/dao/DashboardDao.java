@@ -8,7 +8,6 @@ import com.cis4660.seller_management.model.Order;
 
 public interface DashboardDao {
 
-	List<Order> getAllOrders();
 	List<Order> getTodaysConfirmedOrders();
 	List<Order> getTodaysCancelledOrders();
 	List<Order> getTodaysReturnedOrders();

@@ -29,11 +29,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping(value="/dashboard")
 public class DashboardController {
+	//Field Set dependency injection for an object of DashboardService
 	@Autowired
 	DashboardService dashboardService;
 	
 	private final Logger log = LoggerFactory.getLogger(DashboardController.class);
 	
+	/**
+	 * This method is a GET request to redirect
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/dashboard",method = RequestMethod.GET)
 	public ModelAndView firstPage(ModelMap model,HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
@@ -46,7 +53,13 @@ public class DashboardController {
 		}
 		return new ModelAndView("dashboard");
 	}
-	
+	/**
+	 * This method is also a GET Request from the dashboard to load sales, channels, trending products and profit calculator.
+	 * @param request
+	 * @param inventory
+	 * @param model
+	 * @return
+	 */
 	@ModelAttribute
 	@RequestMapping(method = RequestMethod.GET)
 	public String productsData(HttpServletRequest request,@ModelAttribute("products") Inventory inventory,ModelMap model) {
@@ -61,6 +74,7 @@ public class DashboardController {
 		}
 		
 		List<Inventory> products = dashboardService.getUsersProducts(userId);
+		
 		int todaysConfirmed = dashboardService.getTodaysConfirmedOrdersSize();
 		int todaysCancelled = dashboardService.getTodaysCancelledOrdersSize();
 		int todaysReturned = dashboardService.getTodaysReturnedOrdersSize();
@@ -126,17 +140,10 @@ public class DashboardController {
 		return "dashboard";
 		
 	}
-	
-//	@RequestMapping(value="/products", method = RequestMethod.GET)
-//	@ResponseBody
-//	public String productsData(@RequestParam(value="userId", required=true) String userId) {
-//		
-//		String products = dashboardService.getUsersProducts(userId).toString();
-//		return products;
-//		
-//	}
-
-	
+	/**
+	 * This method is to return the trending products in the current month
+	 * @return
+	 */
 	@RequestMapping(value="trendingProducts",method=RequestMethod.GET)
 	@ResponseBody
 	public String getTrendingProductsThisMonth() {

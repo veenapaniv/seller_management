@@ -35,6 +35,9 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 		setJdbcTemplate(jdbcTemplate);
 	}
 	
+	/**
+	 * This method helps in inserting the details to the database to register the user
+	 */
 	@Override
 	public boolean registerUser(String emailId, String password, String firstname, String lastname, String phone,
 			String address) {
@@ -48,12 +51,8 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 		return insertUserDetailsToDb(emailId, password, firstname, lastname, tel,	address);
 	}
 
-	public int addEmplyee(int id) {
-	    return jdbcTemplate.update(
-	        "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?)", 5, "Bill", "Gates", "USA");
-	}
 	
-	/*1.same email id don’t allow
+	/**1.same email id don’t allow
 	2. Empty fields don’t save to db - server side validations
 	3. Popup successful registration and error in registration messages
 	*/
@@ -80,6 +79,16 @@ public class RegistrationDaoImpl extends JdbcDaoSupport implements RegistrationD
 		return false;
 		
 	}
+	
+	/**
+	 * Validate and returns a boolean by validating the other fields
+	 * @param password
+	 * @param firstname
+	 * @param lastname
+	 * @param phone
+	 * @param address
+	 * @return
+	 */
 
 	private boolean validateOtherFields(String password, String firstname, String lastname, long phone, String address) {
 		if ((null == password) || (password.isEmpty()) || (null == firstname) || (firstname.isEmpty())
